@@ -1,5 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 // MODELS
 const User = require("./models/User");
@@ -21,11 +22,16 @@ async function seed() {
 
     console.log("Old data cleared");
 
+    // Hash passwords for seed users
+    const adminPassword = await bcrypt.hash("admin123", 10);
+    const userPassword = await bcrypt.hash("user123", 10);
+
     // USERS
     const [admin, user1] = await User.insertMany([
       {
         username: "admin_gm",
         email: "admin@chessreels.com",
+        password: adminPassword,
         profile: {
           name: "Chess Admin",
           avatarUrl: "https://cdn.app.com/avatar/admin.png",
@@ -36,6 +42,7 @@ async function seed() {
       {
         username: "pawncrusher",
         email: "user@chessreels.com",
+        password: userPassword,
         profile: {
           name: "Pawn Crusher",
           avatarUrl: "https://cdn.app.com/avatar/user.png",
