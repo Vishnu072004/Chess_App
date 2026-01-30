@@ -44,6 +44,7 @@ router.get("/me", (req, res) => {
         expiresInMinutes: Math.floor(expiresIn / 60)
       }
     });
+    console.log("GET /data/me - Token info retrieved");
   } catch (error) {
     if (error.name === "TokenExpiredError") {
       return res.status(401).json({ error: "Token expired", message: "Please login again" });
@@ -75,7 +76,7 @@ router.get("/all", async (req, res) => {
       reels,
       comments,
     });
-    console.log("Data route accessed: all data sent");
+    console.log("GET /data/all - All data fetched");
   } catch (err) {
     console.error("Data route error:", err);
     res.status(500).json({ error: "Failed to fetch data" });
@@ -100,7 +101,7 @@ router.post("/user", async (req, res) => {
     
     const savedUser = await newUser.save();
     res.status(201).json({ success: true, data: savedUser });
-    console.log("User created:", savedUser.username);
+    console.log("POST /data/user - User created:", savedUser.username);
   } catch (err) {
     console.error("Create user error:", err);
     res.status(500).json({ error: "Failed to create user", message: err.message });

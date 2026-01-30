@@ -5,29 +5,11 @@ dotenv.config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const { verifyToken } = require("../middleware/auth");
 
 const SALT_ROUNDS = 10;
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "24h";
-
-// Middleware to verify JWT token
-const verifyToken = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({ error: "Access denied. No token provided." });
-    }
-
-    const token = authHeader.split(" ")[1];
-
-    try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        req.user = decoded;
-        next();
-    } catch (error) {
-        return res.status(401).json({ error: "Invalid or expired token" });
-    }
-};
 
 // POST /auth/register - Create a new user
 router.post("/register", async (req, res) => {
@@ -79,6 +61,7 @@ router.post("/register", async (req, res) => {
                 email: user.email
             }
         });
+        console.log("POST /auth/register - User registered:", user.email);
     } catch (error) {
         console.error("Registration error:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -107,6 +90,7 @@ router.post("/login", async (req, res) => {
                 { expiresIn: JWT_EXPIRES_IN }
             );
 
+            console.log("POST /auth/login - Admin login successful" + adminEmail);
             return res.json({
                 message: "Admin login successful",
                 isAdmin: true,
@@ -147,6 +131,7 @@ router.post("/login", async (req, res) => {
                 email: user.email
             }
         });
+        console.log("POST /auth/login - User login successful:", user.email);
     } catch (error) {
         console.error("Login error:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -154,9 +139,10 @@ router.post("/login", async (req, res) => {
 });
 
 // POST /auth/logout - Client should discard token (no server action needed for JWT)
-router.post("/logout", (req, res) => {
+router.post("/logout", verifyToken, (req, res) => {
     // With JWT, logout is handled client-side by discarding the token
     res.json({ message: "Logout successful. Please discard your token." });
+    console.log("POST /auth/logout - User logged out: " + req.user.email);
 });
 
 // PUT /auth/setup-profile - Setup or update user profile
@@ -202,6 +188,7 @@ router.put("/setup-profile", verifyToken, async (req, res) => {
                 profile: updatedUser.profile
             }
         });
+        console.log("PUT /auth/setup-profile - Profile updated:", updatedUser.email);
     } catch (error) {
         console.error("Profile setup error:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -218,12 +205,11 @@ router.delete("/delete-account", verifyToken, async (req, res) => {
         }
 
         res.json({ message: "Account deleted successfully" });
+        console.log("DELETE /auth/delete-account - Account deleted:", req.user.email);
     } catch (error) {
         console.error("Delete account error:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 });
 
-// Export verifyToken middleware for use in other routes
 module.exports = router;
-module.exports.verifyToken = verifyToken;
