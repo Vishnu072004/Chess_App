@@ -1,18 +1,43 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
 
 // Import models
 const Reel = require("../models/Reel");
 
-// Middleware to verify admin access
+const JWT_SECRET = process.env.JWT_SECRET;
+
+// Middleware to verify admin access via JWT
 const verifyAdmin = (req, res, next) => {
-  if (!req.session || !req.session.isAdmin) {
-    return res.status(403).json({ 
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ 
       error: "Access denied", 
-      message: "Admin privileges required" 
+      message: "No token provided" 
     });
   }
-  next();
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    
+    if (!decoded.isAdmin) {
+      return res.status(403).json({ 
+        error: "Access denied", 
+        message: "Admin privileges required" 
+      });
+    }
+    
+    req.admin = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({ 
+      error: "Access denied", 
+      message: "Invalid or expired token" 
+    });
+  }
 };
 
 // Apply verifyAdmin middleware to all admin routes

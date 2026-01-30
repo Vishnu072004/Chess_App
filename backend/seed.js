@@ -27,7 +27,7 @@ async function seed() {
     const userPassword = await bcrypt.hash("user123", 10);
 
     // USERS
-    const [admin, user1] = await User.insertMany([
+    const [user1] = await User.insertMany([
       {
         username: "pawncrusher",
         email: "user@chessreels.com",
