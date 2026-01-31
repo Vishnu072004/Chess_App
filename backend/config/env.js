@@ -6,7 +6,7 @@ export const PORT = process.env.PORT || 5000;
 export const APP_NAME = process.env.App_NAME || "ReelsApp";
 
 // Database Configuration
-export const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/reels";
+export const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/"+APP_NAME;
 
 // JWT Configuration
 export const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";

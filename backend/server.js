@@ -7,7 +7,7 @@ import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import dataRoutes from "./routes/dataRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
-import commentRoutes from "./routes/commentRoutes.js";
+import reelRoutes from "./routes/reelRoutes.js";
 
 const app = express();
 
@@ -25,7 +25,7 @@ await connectDB();
 app.use("/auth", authRoutes);
 app.use("/data", dataRoutes);
 app.use("/admin", adminRoutes);
-app.use("/comments", commentRoutes);
+app.use("/reels", reelRoutes);
 
 // Start server
 app.listen(PORT, () => {

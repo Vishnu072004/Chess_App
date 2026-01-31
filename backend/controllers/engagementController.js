@@ -1,15 +1,80 @@
 import Comment from "../models/Comment.js";
 import Reel from "../models/Reel.js";
 
-// POST /comments - Create a new comment
+// ============ LIKE FUNCTIONS ============
+
+// POST /reels/:reelId/like - Like a reel (requires auth)
+export const likeReel = async (req, res) => {
+    try {
+        const { reelId } = req.params;
+
+        const reel = await Reel.findByIdAndUpdate(
+            reelId,
+            { $inc: { "engagement.likes": 1 } },
+            { new: true }
+        );
+
+        if (!reel) {
+            return res.status(404).json({ error: "Reel not found" });
+        }
+
+        res.json({
+            success: true,
+            message: "Reel liked",
+            likes: reel.engagement.likes,
+        });
+        console.log(`POST /reels/${reelId}/like - Reel liked, total likes: ${reel.engagement.likes}`);
+    } catch (err) {
+        console.error("POST /reels/:reelId/like - Error:", err);
+        res.status(500).json({ error: "Failed to like reel", message: err.message });
+    }
+};
+
+// POST /reels/:reelId/unlike - Unlike a reel (requires auth)
+export const unlikeReel = async (req, res) => {
+    try {
+        const { reelId } = req.params;
+
+        const reel = await Reel.findByIdAndUpdate(
+            reelId,
+            { $inc: { "engagement.likes": -1 } },
+            { new: true }
+        );
+
+        if (!reel) {
+            return res.status(404).json({ error: "Reel not found" });
+        }
+
+        // Ensure likes don't go negative
+        if (reel.engagement.likes < 0) {
+            reel.engagement.likes = 0;
+            await reel.save();
+        }
+
+        res.json({
+            success: true,
+            message: "Reel unliked",
+            likes: reel.engagement.likes,
+        });
+        console.log(`POST /reels/${reelId}/unlike - Reel unliked, total likes: ${reel.engagement.likes}`);
+    } catch (err) {
+        console.error("POST /reels/:reelId/unlike - Error:", err);
+        res.status(500).json({ error: "Failed to unlike reel", message: err.message });
+    }
+};
+
+// ============ COMMENT FUNCTIONS ============
+
+// POST /reels/:reelId/comments - Create a new comment
 export const createComment = async (req, res) => {
     try {
-        const { reelId, text, parentCommentId } = req.body;
+        const { reelId } = req.params;
+        const { text, parentCommentId } = req.body;
         const userId = req.user.userId;
 
         // Validate required fields
-        if (!reelId || !text) {
-            return res.status(400).json({ error: "reelId and text are required" });
+        if (!text) {
+            return res.status(400).json({ error: "text is required" });
         }
 
         // Check if reel exists
@@ -53,17 +118,17 @@ export const createComment = async (req, res) => {
             message: "Comment created successfully",
             data: comment,
         });
-        console.log("POST /comments - Comment created:", comment._id);
+        console.log(`POST /reels/${reelId}/comments - Comment created: ${comment._id}`);
     } catch (error) {
-        console.error("Create comment error:", error);
+        console.error("POST /reels/:reelId/comments - Error:", error);
         res.status(500).json({ error: "Failed to create comment" });
     }
 };
 
-// DELETE /comments/:commentId - Delete a comment (and all replies)
+// DELETE /reels/:reelId/comments/:commentId - Delete a comment (and all replies)
 export const deleteComment = async (req, res) => {
     try {
-        const { commentId } = req.params;
+        const { reelId, commentId } = req.params;
         const userId = req.user.userId;
 
         // Find the comment
@@ -129,14 +194,14 @@ export const deleteComment = async (req, res) => {
             message: `Comment and ${repliesCount} replies deleted successfully`,
             deletedCount: totalDeleted,
         });
-        console.log(`DELETE /comments/:commentId - Comment ${commentId} and ${repliesCount} replies deleted`);
+        console.log(`DELETE /reels/${reelId}/comments/${commentId} - Comment and ${repliesCount} replies deleted`);
     } catch (error) {
-        console.error("Delete comment error:", error);
+        console.error("DELETE /reels/:reelId/comments/:commentId - Error:", error);
         res.status(500).json({ error: "Failed to delete comment" });
     }
 };
 
-// GET /comments/reel/:reelId - Get all comments for a reel
+// GET /reels/:reelId/comments - Get all comments for a reel
 export const getCommentsByReel = async (req, res) => {
     try {
         const { reelId } = req.params;
@@ -150,9 +215,9 @@ export const getCommentsByReel = async (req, res) => {
             count: comments.length,
             data: comments,
         });
-        console.log("GET /comments/reel/:reelId - Comments fetched:", comments.length);
+        console.log(`GET /reels/${reelId}/comments - ${comments.length} comments fetched`);
     } catch (error) {
-        console.error("Get comments error:", error);
+        console.error("GET /reels/:reelId/comments - Error:", error);
         res.status(500).json({ error: "Failed to fetch comments" });
     }
 };

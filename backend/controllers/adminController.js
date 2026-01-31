@@ -27,9 +27,9 @@ export const uploadVideo = async (req, res) => {
             data: savedVideo,
             uploadedBy: adminId,
         });
-        console.log(`POST /admin/video - Video uploaded by admin ${adminId}:`, savedVideo._id);
+        console.log(`POST /admin/video - Video uploaded: ${savedVideo._id} (by admin: ${adminId})`);
     } catch (err) {
-        console.error("Upload video error:", err);
+        console.error("POST /admin/video - Error:", err);
         res.status(500).json({ error: "Failed to upload video", message: err.message });
     }
 };
@@ -63,9 +63,9 @@ export const updateVideo = async (req, res) => {
         }
 
         res.json({ success: true, data: updatedVideo });
-        console.log("PUT /admin/video/:videoId - Video updated:", videoId);
+        console.log(`PUT /admin/video/${videoId} - Video updated successfully`);
     } catch (err) {
-        console.error("Update video error:", err);
+        console.error("PUT /admin/video/:videoId - Error:", err);
         res.status(500).json({ error: "Failed to update video", message: err.message });
     }
 };
@@ -82,9 +82,9 @@ export const deleteVideo = async (req, res) => {
         }
 
         res.json({ success: true, message: "Video deleted successfully", data: deletedVideo });
-        console.log("DELETE /admin/video/:videoId - Video deleted:", videoId);
+        console.log(`DELETE /admin/video/${videoId} - Video deleted successfully`);
     } catch (err) {
-        console.error("Delete video error:", err);
+        console.error("DELETE /admin/video/:videoId - Error:", err);
         res.status(500).json({ error: "Failed to delete video", message: err.message });
     }
 };
@@ -95,9 +95,9 @@ export const getAllVideos = async (req, res) => {
         const videos = await Reel.find().populate("gameId").sort({ createdAt: -1 });
 
         res.json({ success: true, count: videos.length, data: videos });
-        console.log("GET /admin/videos - All videos fetched:", videos.length);
+        console.log(`GET /admin/videos - ${videos.length} videos fetched`);
     } catch (err) {
-        console.error("Get all videos error:", err);
+        console.error("GET /admin/videos - Error:", err);
         res.status(500).json({ error: "Failed to fetch videos", message: err.message });
     }
 };
@@ -114,9 +114,9 @@ export const getVideoById = async (req, res) => {
         }
 
         res.json({ success: true, data: video });
-        console.log("GET /admin/video/:videoId - Video fetched:", videoId);
+        console.log(`GET /admin/video/${videoId} - Video fetched: ${video.content?.title}`);
     } catch (err) {
-        console.error("Get video by ID error:", err);
+        console.error("GET /admin/video/:videoId - Error:", err);
         res.status(500).json({ error: "Failed to fetch video", message: err.message });
     }
 };
