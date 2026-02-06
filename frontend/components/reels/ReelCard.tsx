@@ -15,10 +15,7 @@ import { ReelActions } from "./ReelActions";
 import { colors } from "@/constants/themes";
 import { getDifficultyColor } from "@/services/reelApi";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-<<<<<<< HEAD
 import { useFocusEffect } from "expo-router";
-=======
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
 // Difficulty mapping
 const difficultyLabels: Record<string, string> = {
@@ -63,17 +60,12 @@ export function ReelCard({
     const [isLoading, setIsLoading] = useState(true);
     const [showControls, setShowControls] = useState(false);
     const [hasRecordedView, setHasRecordedView] = useState(false);
-<<<<<<< HEAD
     const [hasVideoError, setHasVideoError] = useState(false);
     const viewTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // Check if video URL is valid (not empty or whitespace)
     const hasValidUrl = Boolean(reel.video?.url?.trim());
 
-=======
-    const viewTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
     // 2-second view trigger
     useEffect(() => {
         if (isVisible && !hasRecordedView && onView) {
@@ -99,7 +91,6 @@ export function ReelCard({
 
     // Play/pause based on visibility
     useEffect(() => {
-<<<<<<< HEAD
         const handleVisibility = async () => {
             if (!hasValidUrl || hasVideoError) return;
 
@@ -147,16 +138,6 @@ export function ReelCard({
             };
         }, [isVisible, hasValidUrl, hasVideoError])
     );
-=======
-        if (isVisible) {
-            videoRef.current?.playAsync();
-            setIsPlaying(true);
-        } else {
-            videoRef.current?.pauseAsync();
-            setIsPlaying(false);
-        }
-    }, [isVisible]);
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
     const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
         if (status.isLoaded) {
@@ -203,7 +184,6 @@ export function ReelCard({
                 onPress={handleVideoPress}
                 style={StyleSheet.absoluteFill}
             >
-<<<<<<< HEAD
                 {hasValidUrl && !hasVideoError ? (
                     <Video
                         ref={videoRef}
@@ -230,22 +210,6 @@ export function ReelCard({
                         </Text>
                     </View>
                 )}
-=======
-                <Video
-                    ref={videoRef}
-                    source={{ uri: reel.video.url }}
-                    posterSource={{ uri: reel.video.thumbnail }}
-                    usePoster
-                    posterStyle={styles.poster}
-                    style={styles.video}
-                    resizeMode={ResizeMode.COVER}
-                    isLooping
-                    isMuted={isMuted}
-                    shouldPlay={isVisible}
-                    onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-                    onError={(error) => console.error("Video Playback Error:", error)}
-                />
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
             </TouchableOpacity>
 
             {/* Loading Indicator */}
@@ -546,7 +510,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 6, // Make it look like a circle with border if size is 12
     },
-<<<<<<< HEAD
     errorContainer: {
         justifyContent: "center",
         alignItems: "center",
@@ -557,6 +520,4 @@ const styles = StyleSheet.create({
         fontSize: 14,
         textAlign: "center",
     },
-=======
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 });

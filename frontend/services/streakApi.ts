@@ -1,9 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-<<<<<<< HEAD
 import { fetchApi, postApi } from "./api";
-=======
-import { getApi, postApi } from "./api";
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 import { useAuthStore } from "@/stores/authStore";
 
 interface StreakData {
@@ -18,11 +14,7 @@ interface RecordActivityResponse extends StreakData {
 
 // Fetch user's current streak
 const fetchStreak = async (): Promise<StreakData> => {
-<<<<<<< HEAD
     const response = await fetchApi<StreakData>("/streak");
-=======
-    const response = await getApi<StreakData>("/streak");
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
     return response;
 };
 
