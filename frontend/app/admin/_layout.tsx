@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import { colors } from "@/constants/themes";
+<<<<<<< HEAD
 import { AdminAuthGuard } from "@/components/admin/AdminAuthGuard";
 
 export default function AdminLayout() {
@@ -20,5 +21,22 @@ export default function AdminLayout() {
                 <Stack.Screen name="upload" />
             </Stack>
         </AdminAuthGuard>
+=======
+
+export default function AdminLayout() {
+    return (
+        <Stack
+            screenOptions={{
+                headerShown: false,
+                contentStyle: { backgroundColor: colors.background.primary },
+                animation: "fade",
+                // Ensure edge-to-edge
+                navigationBarColor: colors.background.primary,
+                statusBarStyle: "light",
+            }}
+        >
+            <Stack.Screen name="dashboard" />
+        </Stack>
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
     );
 }

@@ -12,6 +12,7 @@ import {
     Modal,
     Animated,
     Dimensions,
+<<<<<<< HEAD
     Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -20,6 +21,14 @@ import { colors } from "@/constants/themes";
 import { useReelComments, usePostComment, useDeleteComment } from "@/services/reelApi";
 import * as Haptics from "expo-haptics";
 import { useAuthStore } from "@/stores/authStore";
+=======
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { X, Send, MessageCircle } from "lucide-react-native";
+import { colors } from "@/constants/themes";
+import { useReelComments, usePostComment } from "@/services/reelApi";
+import * as Haptics from "expo-haptics";
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -49,8 +58,11 @@ export function CommentsBottomSheet({ reelId, onClose, visible }: CommentsBottom
 
     const { data: comments, isLoading, refetch } = useReelComments(reelId);
     const postComment = usePostComment();
+<<<<<<< HEAD
     const deleteComment = useDeleteComment();
     const { user } = useAuthStore();
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
     // Animate in/out
     React.useEffect(() => {
@@ -68,7 +80,11 @@ export function CommentsBottomSheet({ reelId, onClose, visible }: CommentsBottom
                 useNativeDriver: true,
             }).start();
         }
+<<<<<<< HEAD
     }, [visible, slideAnim]);
+=======
+    }, [visible]);
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
     const handleSubmitComment = useCallback(async () => {
         if (!commentText.trim()) return;
@@ -101,6 +117,7 @@ export function CommentsBottomSheet({ reelId, onClose, visible }: CommentsBottom
         return date.toLocaleDateString();
     }, []);
 
+<<<<<<< HEAD
     const handleDeleteComment = useCallback((commentId: string) => {
         Alert.alert(
             "Delete Comment",
@@ -157,6 +174,28 @@ export function CommentsBottomSheet({ reelId, onClose, visible }: CommentsBottom
             );
         },
         [formatTimeAgo, user, handleDeleteComment]
+=======
+    const renderComment = useCallback(
+        ({ item }: { item: Comment }) => (
+            <View style={styles.commentItem}>
+                <View style={styles.avatar}>
+                    <Text style={styles.avatarText}>
+                        {item.userId?.username?.[0]?.toUpperCase() || "?"}
+                    </Text>
+                </View>
+                <View style={styles.commentContent}>
+                    <View style={styles.commentHeader}>
+                        <Text style={styles.username}>
+                            {item.userId?.username || "Anonymous"}
+                        </Text>
+                        <Text style={styles.timeAgo}>{formatTimeAgo(item.createdAt)}</Text>
+                    </View>
+                    <Text style={styles.commentText}>{item.text}</Text>
+                </View>
+            </View>
+        ),
+        [formatTimeAgo]
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
     );
 
     if (!visible) return null;
@@ -397,8 +436,11 @@ const styles = StyleSheet.create({
     sendButtonDisabled: {
         opacity: 0.5,
     },
+<<<<<<< HEAD
     deleteButton: {
         marginLeft: "auto",
         padding: 4,
     },
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 });

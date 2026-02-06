@@ -55,7 +55,11 @@ async function fetchReels(): Promise<Reel[]> {
             return reels;
         } catch (fallbackError) {
             console.error("Fallback also failed, trying cache:", fallbackError);
+<<<<<<< HEAD
             return await getCachedReels();
+=======
+            return getCachedReels();
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
         }
     }
 }
@@ -87,29 +91,100 @@ export function useReel(reelId: string) {
 
 // Like a reel with optimistic update
 export function useLikeReel() {
+<<<<<<< HEAD
+=======
+    const queryClient = useQueryClient();
+
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
     return useMutation({
         mutationFn: async ({ reelId, action }: { reelId: string; action: "like" | "unlike" }) => {
             const response = await apiClient.patch(`/reels/${reelId}/like`, { action });
             return response.data;
         },
+<<<<<<< HEAD
         // Note: Optimistic updates are handled by the Zustand store in reels.tsx
         // We do NOT update React Query cache here to avoid double-updates and infinite loops
         onError: (err) => {
             console.error("Like mutation failed:", err);
             // Store rollback is handled by the component if needed
+=======
+        onMutate: async ({ reelId, action }) => {
+            // Cancel outgoing refetches
+            await queryClient.cancelQueries({ queryKey: ["reels"] });
+
+            // Snapshot previous value
+            const previousReels = queryClient.getQueryData<Reel[]>(["reels"]);
+
+            // Optimistically update
+            if (previousReels) {
+                queryClient.setQueryData<Reel[]>(["reels"], (old) =>
+                    old?.map((reel) =>
+                        reel._id === reelId
+                            ? {
+                                ...reel,
+                                engagement: {
+                                    ...reel.engagement,
+                                    likes: action === "like"
+                                        ? (reel.engagement?.likes || 0) + 1
+                                        : Math.max(0, (reel.engagement?.likes || 0) - 1),
+                                },
+                            }
+                            : reel
+                    )
+                );
+            }
+
+            return { previousReels };
+        },
+        onError: (err, variables, context) => {
+            // Rollback on error
+            if (context?.previousReels) {
+                queryClient.setQueryData(["reels"], context.previousReels);
+            }
+        },
+        onSettled: () => {
+            // Refetch to sync with server
+            queryClient.invalidateQueries({ queryKey: ["reels"] });
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
         },
     });
 }
 
 // Record a unique view on a reel
 export function useRecordView() {
+<<<<<<< HEAD
+=======
+    const queryClient = useQueryClient();
+
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
     return useMutation({
         mutationFn: async ({ reelId, viewerId }: { reelId: string; viewerId: string }) => {
             const response = await apiClient.post(`/reels/${reelId}/view`, { viewerId });
             return response.data;
         },
+<<<<<<< HEAD
         // Note: View count updates are handled by Zustand store (incrementViews)
         // We do NOT update React Query cache here to avoid sync loops
+=======
+        onSuccess: (data, { reelId }) => {
+            // Only update cache if it was a new view
+            if (data.isNewView) {
+                queryClient.setQueryData<Reel[]>(["reels"], (old) =>
+                    old?.map((reel) =>
+                        reel._id === reelId
+                            ? {
+                                ...reel,
+                                engagement: {
+                                    ...reel.engagement,
+                                    views: data.views,
+                                },
+                            }
+                            : reel
+                    )
+                );
+            }
+        },
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
     });
 }
 
@@ -168,6 +243,7 @@ export function usePostComment() {
     });
 }
 
+<<<<<<< HEAD
 // Delete a comment
 export function useDeleteComment() {
     const queryClient = useQueryClient();
@@ -201,6 +277,8 @@ export function useDeleteComment() {
     });
 }
 
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 // Format view count for display
 export function formatCount(count: number): string {
     if (count >= 1000000) {
@@ -225,6 +303,7 @@ export function getDifficultyColor(difficulty: string): string {
             return "#6B7280"; // gray
     }
 }
+<<<<<<< HEAD
 
 // ============== PUBLIC FOLDER API ==============
 
@@ -287,3 +366,5 @@ export function useReelsByFolder(folder?: string, grandmaster?: string) {
         enabled: !!folder,
     });
 }
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757

@@ -32,15 +32,21 @@ interface PostReelData {
     fenString?: string;
     tags?: string[];
     difficulty?: "beginner" | "intermediate" | "advanced";
+<<<<<<< HEAD
     folder?: "random" | "grandmaster";
     grandmaster?: string | null;
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 }
 
 // Fetch all reels for admin (including drafts)
 async function fetchAdminReels(): Promise<Reel[]> {
     const response = await apiClient.get<AdminVideosResponse>("/admin/videos");
     return response.data.data || [];
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 }
 
 // Fetch admin stats
@@ -157,6 +163,7 @@ export function useDeleteReel() {
         },
     });
 }
+<<<<<<< HEAD
 
 // Types for folder APIs
 interface GrandmasterData {
@@ -327,3 +334,5 @@ export function useDeleteGrandmaster() {
         },
     });
 }
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757

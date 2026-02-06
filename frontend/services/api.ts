@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { InternalAxiosRequestConfig } from "axios";
 import { QueryClient } from "@tanstack/react-query";
 import { axiosClient } from "./axiosClient";
@@ -12,10 +13,28 @@ const getAuthStore = () => {
     const { useAuthStore } = require("@/stores/authStore");
     return useAuthStore;
 };
+=======
+import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
+import { QueryClient } from "@tanstack/react-query";
+import { useAuthStore } from "@/stores/authStore";
+
+// API base URL - use environment variable or fallback
+const API_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:5000";
+
+// Create axios instance
+export const apiClient: AxiosInstance = axios.create({
+    baseURL: API_URL,
+    timeout: 10000,
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
 // Request interceptor to add auth token
 apiClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
+<<<<<<< HEAD
         try {
             const token = getAuthStore().getState().token;
             if (token) {
@@ -23,6 +42,11 @@ apiClient.interceptors.request.use(
             }
         } catch (e) {
             // Store not initialized yet, skip token
+=======
+        const token = useAuthStore.getState().token;
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
         }
         return config;
     },
@@ -36,12 +60,17 @@ apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
+<<<<<<< HEAD
             try {
                 // Token expired or invalid - logout user
                 getAuthStore().getState().logout();
             } catch (e) {
                 // Store not initialized yet, skip logout
             }
+=======
+            // Token expired or invalid - logout user
+            useAuthStore.getState().logout();
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
         }
         return Promise.reject(error);
     }

@@ -8,6 +8,7 @@ import {
     Text,
     RefreshControl,
     Share,
+<<<<<<< HEAD
     TouchableOpacity,
     ScrollView,
 } from "react-native";
@@ -18,17 +19,29 @@ import { LinearGradient } from "expo-linear-gradient";
 import { ReelCard } from "@/components/reels/ReelCard";
 import { CommentsBottomSheet } from "@/components/reels/CommentsBottomSheet";
 import { useReels, useLikeReel, useRecordView, usePublicGrandmasters, useReelsByFolder } from "@/services/reelApi";
+=======
+} from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { ReelCard } from "@/components/reels/ReelCard";
+import { CommentsBottomSheet } from "@/components/reels/CommentsBottomSheet";
+import { useReels, useLikeReel, useRecordView } from "@/services/reelApi";
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 import { useReelStore } from "@/stores/reelStore";
 import { useAuthStore } from "@/stores/authStore";
 import { colors } from "@/constants/themes";
 import { Reel } from "@/types/reel";
 import * as Haptics from "expo-haptics";
 
+<<<<<<< HEAD
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
+=======
+const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
 // Generate a unique session ID for guests
 const generateSessionId = () => `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
+<<<<<<< HEAD
 type FolderType = "all" | "random" | "grandmaster";
 
 export default function ReelsScreen() {
@@ -48,6 +61,10 @@ export default function ReelsScreen() {
         selectedGrandmaster || undefined
     );
 
+=======
+export default function ReelsScreen() {
+    const { data: fetchedReels, isLoading, error, refetch, isRefetching } = useReels();
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
     const likeMutation = useLikeReel();
     const recordViewMutation = useRecordView();
     const [currentVisibleIndex, setCurrentVisibleIndex] = useState(0);
@@ -77,6 +94,7 @@ export default function ReelsScreen() {
         itemVisiblePercentThreshold: 50,
     }).current;
 
+<<<<<<< HEAD
     // Determine which reels to show
     const displayReels = selectedFolder === "all"
         ? (storeReels.length > 0 ? storeReels : fetchedReels)
@@ -88,6 +106,17 @@ export default function ReelsScreen() {
             setReels(fetchedReels);
         }
     }, [fetchedReels, setReels, selectedFolder]);
+=======
+    // Sync fetched reels to store
+    useEffect(() => {
+        if (fetchedReels && fetchedReels.length > 0) {
+            setReels(fetchedReels);
+        }
+    }, [fetchedReels, setReels]);
+
+    // Use store reels (with live counts) for rendering, fallback to fetched
+    const reels = storeReels.length > 0 ? storeReels : fetchedReels;
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
     const onViewableItemsChanged = useCallback(
         ({ viewableItems }: { viewableItems: Array<{ index: number | null; item: Reel }> }) => {
@@ -169,6 +198,7 @@ export default function ReelsScreen() {
         }
     }, []);
 
+<<<<<<< HEAD
     const handleFolderChange = (folder: FolderType) => {
         Haptics.selectionAsync();
         setSelectedFolder(folder);
@@ -187,6 +217,8 @@ export default function ReelsScreen() {
         setSelectedGrandmaster(null);
     };
 
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
     const renderItem = useCallback(
         ({ item, index }: { item: Reel; index: number }) => (
             <ReelCard
@@ -204,9 +236,13 @@ export default function ReelsScreen() {
         [currentVisibleIndex, isLiked, isSaved, handleLike, handleSave, handleComment, handleShare, handleView]
     );
 
+<<<<<<< HEAD
     const isLoadingReels = selectedFolder === "all" ? isLoading : folderLoading;
 
     if (isLoadingReels && !displayReels?.length) {
+=======
+    if (isLoading) {
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color={colors.accent.cyan} />
@@ -215,7 +251,11 @@ export default function ReelsScreen() {
         );
     }
 
+<<<<<<< HEAD
     if (error && selectedFolder === "all") {
+=======
+    if (error) {
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
         return (
             <View style={styles.errorContainer}>
                 <Text style={styles.errorText}>Failed to load reels</Text>
@@ -224,6 +264,7 @@ export default function ReelsScreen() {
         );
     }
 
+<<<<<<< HEAD
     // Show grandmaster selection grid when GM folder selected but no GM chosen
     if (selectedFolder === "grandmaster" && !selectedGrandmaster) {
         return (
@@ -298,6 +339,13 @@ export default function ReelsScreen() {
                         )}
                     </ScrollView>
                 </LinearGradient>
+=======
+    if (!reels || reels.length === 0) {
+        return (
+            <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>No reels available</Text>
+                <Text style={styles.emptySubtext}>Check back later for new content</Text>
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
             </View>
         );
     }
@@ -305,6 +353,7 @@ export default function ReelsScreen() {
     return (
         <View style={styles.container}>
             <StatusBar style="light" />
+<<<<<<< HEAD
 
             {/* Folder Navigation Header */}
             <View style={[styles.folderHeader, { paddingTop: insets.top + 8 }]}>
@@ -383,6 +432,37 @@ export default function ReelsScreen() {
                     })}
                 />
             )}
+=======
+            <FlatList
+                data={reels}
+                renderItem={renderItem}
+                keyExtractor={(item) => item._id}
+                extraData={storeReels} // Force re-render when store reels change
+                pagingEnabled
+                showsVerticalScrollIndicator={false}
+                snapToInterval={SCREEN_HEIGHT}
+                snapToAlignment="start"
+                decelerationRate="fast"
+                onViewableItemsChanged={onViewableItemsChanged}
+                viewabilityConfig={viewabilityConfig}
+                removeClippedSubviews
+                maxToRenderPerBatch={2}
+                windowSize={3}
+                initialNumToRender={1}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isRefetching}
+                        onRefresh={refetch}
+                        tintColor={colors.accent.cyan}
+                    />
+                }
+                getItemLayout={(_, index) => ({
+                    length: SCREEN_HEIGHT,
+                    offset: SCREEN_HEIGHT * index,
+                    index,
+                })}
+            />
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
             {/* Comments Bottom Sheet */}
             {commentsReelId && (
@@ -401,6 +481,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.background.primary,
     },
+<<<<<<< HEAD
     folderHeader: {
         position: "absolute",
         top: 0,
@@ -496,6 +577,8 @@ const styles = StyleSheet.create({
         color: colors.text.muted,
         fontSize: 12,
     },
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
     loadingContainer: {
         flex: 1,
         backgroundColor: colors.background.primary,
@@ -539,6 +622,7 @@ const styles = StyleSheet.create({
         color: colors.text.muted,
         fontSize: 14,
     },
+<<<<<<< HEAD
     // GM List View styles
     gmListContainer: {
         flex: 1,
@@ -629,3 +713,6 @@ const styles = StyleSheet.create({
     },
 });
 
+=======
+});
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757

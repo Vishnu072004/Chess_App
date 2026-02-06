@@ -51,7 +51,11 @@ export const useReelStore = create<ReelState>((set, get) => ({
         // Update engagement count locally
         const updatedReels = reels.map((reel) =>
             reel._id === reelId
+<<<<<<< HEAD
                 ? { ...reel, engagement: { ...(reel.engagement || { likes: 0, comments: 0, views: 0, saves: 0 }), likes: (reel.engagement?.likes || 0) + 1 } }
+=======
+                ? { ...reel, engagement: { ...reel.engagement, likes: reel.engagement.likes + 1 } }
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
                 : reel
         );
 
@@ -65,7 +69,11 @@ export const useReelStore = create<ReelState>((set, get) => ({
 
         const updatedReels = reels.map((reel) =>
             reel._id === reelId
+<<<<<<< HEAD
                 ? { ...reel, engagement: { ...(reel.engagement || { likes: 0, comments: 0, views: 0, saves: 0 }), likes: Math.max(0, (reel.engagement?.likes || 0) - 1) } }
+=======
+                ? { ...reel, engagement: { ...reel.engagement, likes: Math.max(0, reel.engagement.likes - 1) } }
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
                 : reel
         );
 
@@ -79,7 +87,11 @@ export const useReelStore = create<ReelState>((set, get) => ({
 
         const updatedReels = reels.map((reel) =>
             reel._id === reelId
+<<<<<<< HEAD
                 ? { ...reel, engagement: { ...(reel.engagement || { likes: 0, comments: 0, views: 0, saves: 0 }), saves: (reel.engagement?.saves || 0) + 1 } }
+=======
+                ? { ...reel, engagement: { ...reel.engagement, saves: reel.engagement.saves + 1 } }
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
                 : reel
         );
 
@@ -93,7 +105,11 @@ export const useReelStore = create<ReelState>((set, get) => ({
 
         const updatedReels = reels.map((reel) =>
             reel._id === reelId
+<<<<<<< HEAD
                 ? { ...reel, engagement: { ...(reel.engagement || { likes: 0, comments: 0, views: 0, saves: 0 }), saves: Math.max(0, (reel.engagement?.saves || 0) - 1) } }
+=======
+                ? { ...reel, engagement: { ...reel.engagement, saves: Math.max(0, reel.engagement.saves - 1) } }
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
                 : reel
         );
 
@@ -108,7 +124,11 @@ export const useReelStore = create<ReelState>((set, get) => ({
         const { reels } = get();
         const updatedReels = reels.map((reel) =>
             reel._id === reelId
+<<<<<<< HEAD
                 ? { ...reel, engagement: { ...(reel.engagement || { likes: 0, comments: 0, views: 0, saves: 0 }), views: (reel.engagement?.views || 0) + 1 } }
+=======
+                ? { ...reel, engagement: { ...reel.engagement, views: reel.engagement.views + 1 } }
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
                 : reel
         );
         set({ reels: updatedReels });

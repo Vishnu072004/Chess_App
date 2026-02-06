@@ -1,14 +1,22 @@
+<<<<<<< HEAD
 import React, { useEffect, useRef } from "react";
+=======
+import React, { useEffect } from "react";
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 import { Stack, usePathname, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { View, Platform } from "react-native";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+<<<<<<< HEAD
 import { Audio } from "expo-av";
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 import { queryClient } from "@/services/api";
 import { colors } from "@/constants/themes";
 import { useAuthStore } from "@/stores/authStore";
 
+<<<<<<< HEAD
 // Configure audio mode for video playback
 async function configureAudio() {
     try {
@@ -24,18 +32,24 @@ async function configureAudio() {
     }
 }
 
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 // Route guard component to protect admin routes
 function RouteGuard({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const router = useRouter();
     const isAdmin = useAuthStore((state) => state.isAdmin);
     const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+<<<<<<< HEAD
     const hasRedirected = useRef(false);
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
     useEffect(() => {
         // Check if user is trying to access admin routes
         if (pathname.startsWith("/(admin)") || pathname.startsWith("/admin")) {
             if (!isAuthenticated || !isAdmin) {
+<<<<<<< HEAD
                 // Only redirect once to prevent loops
                 if (!hasRedirected.current) {
                     hasRedirected.current = true;
@@ -44,16 +58,26 @@ function RouteGuard({ children }: { children: React.ReactNode }) {
             }
         }
     }, [pathname, isAdmin, isAuthenticated]);
+=======
+                // Redirect non-admin users to login
+                router.replace("/(auth)/login");
+            }
+        }
+    }, [pathname, isAdmin, isAuthenticated, router]);
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
     return <>{children}</>;
 }
 
 export default function RootLayout() {
+<<<<<<< HEAD
     // Configure audio on app startup
     useEffect(() => {
         configureAudio();
     }, []);
 
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <QueryClientProvider client={queryClient}>
@@ -90,4 +114,7 @@ export default function RootLayout() {
     );
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
