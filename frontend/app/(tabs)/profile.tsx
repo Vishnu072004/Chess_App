@@ -31,10 +31,7 @@ import {
     Eye,
     Plus,
     User,
-<<<<<<< HEAD
     Shield,
-=======
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 } from "lucide-react-native";
 import * as Haptics from "expo-haptics";
 
@@ -43,11 +40,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 export default function ProfileScreen() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
-<<<<<<< HEAD
     const { user, isAuthenticated, isAdmin } = useAuthStore();
-=======
-    const { user, isAuthenticated } = useAuthStore();
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
     const { hapticEnabled } = useThemeStore();
 
     // Use stable selectors
@@ -134,7 +127,6 @@ export default function ProfileScreen() {
                     <View style={styles.header}>
                         <Text style={styles.headerTitle}>Profile</Text>
                         <View style={styles.headerActions}>
-<<<<<<< HEAD
                             {/* Only show upload button for admin users */}
                             {isAdmin && (
                                 <TouchableOpacity
@@ -144,14 +136,6 @@ export default function ProfileScreen() {
                                     <Video size={22} color={colors.text.primary} />
                                 </TouchableOpacity>
                             )}
-=======
-                            <TouchableOpacity
-                                onPress={() => router.push("/admin/upload" as any)}
-                                style={styles.settingsButton}
-                            >
-                                <Video size={22} color={colors.text.primary} />
-                            </TouchableOpacity>
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
                             <TouchableOpacity
                                 onPress={handleOpenSettings}
                                 style={styles.settingsButton}
@@ -191,7 +175,6 @@ export default function ProfileScreen() {
                             <Flame size={14} color={colors.warning} />
                             <Text style={styles.streakText}>{streakData?.currentStreak || 0}-Day Streak</Text>
                         </View>
-<<<<<<< HEAD
 
                         {/* Admin Dashboard Button - Only visible for admins */}
                         {isAdmin && (
@@ -208,8 +191,6 @@ export default function ProfileScreen() {
                                 <Text style={styles.adminButtonText}>Admin Dashboard</Text>
                             </TouchableOpacity>
                         )}
-=======
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
                     </View>
 
                     {/* Stats Row */}
@@ -513,7 +494,6 @@ const styles = StyleSheet.create({
     authSection: {
         marginTop: 24,
     },
-<<<<<<< HEAD
     adminButton: {
         flexDirection: "row",
         alignItems: "center",
@@ -531,6 +511,4 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: "600",
     },
-=======
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 });

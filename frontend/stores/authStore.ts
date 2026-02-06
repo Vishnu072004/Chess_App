@@ -1,10 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import * as SecureStore from "expo-secure-store";
-<<<<<<< HEAD
 import { axiosClient } from "@/services/axiosClient";
-=======
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
 export interface User {
     id: string;
@@ -30,27 +27,18 @@ interface AuthState {
     isAuthenticated: boolean;
     isAdmin: boolean;
     isLoading: boolean;
-<<<<<<< HEAD
     error: string | null;
-=======
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
     // Actions
     setUser: (user: User | null) => void;
     setToken: (token: string | null) => void;
     login: (user: User, token: string, isAdmin?: boolean) => void;
-<<<<<<< HEAD
     loginUser: (email: string, password: string) => Promise<boolean>;
     register: (username: string, email: string, password: string) => Promise<boolean>;
     logout: () => void;
     updateProfile: (profile: Partial<User["profile"]>) => void;
     setLoading: (loading: boolean) => void;
     setError: (error: string | null) => void;
-=======
-    logout: () => void;
-    updateProfile: (profile: Partial<User["profile"]>) => void;
-    setLoading: (loading: boolean) => void;
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 }
 
 // Custom storage adapter for Expo SecureStore
@@ -68,20 +56,13 @@ const secureStoreAdapter = {
 
 export const useAuthStore = create<AuthState>()(
     persist(
-<<<<<<< HEAD
         (set) => ({
-=======
-        (set, get) => ({
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
             user: null,
             token: null,
             isAuthenticated: false,
             isAdmin: false,
             isLoading: false,
-<<<<<<< HEAD
             error: null,
-=======
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
             setUser: (user) =>
                 set({
@@ -98,7 +79,6 @@ export const useAuthStore = create<AuthState>()(
                     isAuthenticated: true,
                     isAdmin,
                     isLoading: false,
-<<<<<<< HEAD
                     error: null,
                 }),
 
@@ -167,17 +147,12 @@ export const useAuthStore = create<AuthState>()(
                 }
             },
 
-=======
-                }),
-
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
             logout: () =>
                 set({
                     user: null,
                     token: null,
                     isAuthenticated: false,
                     isAdmin: false,
-<<<<<<< HEAD
                     error: null,
                 }),
 
@@ -200,26 +175,6 @@ export const useAuthStore = create<AuthState>()(
 
             setLoading: (isLoading) => set({ isLoading }),
             setError: (error) => set({ error }),
-=======
-                }),
-
-            updateProfile: (profile) => {
-                const currentUser = get().user;
-                if (currentUser) {
-                    set({
-                        user: {
-                            ...currentUser,
-                            profile: {
-                                ...currentUser.profile,
-                                ...profile,
-                            },
-                        },
-                    });
-                }
-            },
-
-            setLoading: (isLoading) => set({ isLoading }),
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
         }),
         {
             name: "auth-storage",
