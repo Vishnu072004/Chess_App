@@ -6,15 +6,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { authService } from "@/services/authService";
-<<<<<<< HEAD
 import { useAuthStore } from "@/stores/authStore";
-=======
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 import { colors } from "@/constants/themes";
 import { Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react-native";
 import * as Haptics from "expo-haptics";
 
-<<<<<<< HEAD
 // Test admin credentials for local development
 const TEST_ADMIN = {
     email: "admin@chess.com",
@@ -24,10 +20,6 @@ const TEST_ADMIN = {
 export default function LoginScreen() {
     const router = useRouter();
     const login = useAuthStore((state) => state.login);
-=======
-export default function LoginScreen() {
-    const router = useRouter();
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -55,7 +47,6 @@ export default function LoginScreen() {
         setIsLoading(true);
         setError(null);
 
-<<<<<<< HEAD
         // Check for test admin credentials (works offline)
         if (email === TEST_ADMIN.email && password === TEST_ADMIN.password) {
             const adminUser = {
@@ -71,8 +62,6 @@ export default function LoginScreen() {
         }
 
         // Try backend login for other users
-=======
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
         try {
             const response = await authService.login(email, password);
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);

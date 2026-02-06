@@ -29,11 +29,8 @@ export interface Reel {
     engagement: ReelEngagement;
     gameId?: string;
     status: "draft" | "published" | "archived";
-<<<<<<< HEAD
     folder: "random" | "grandmaster";
     grandmaster?: string | null;
-=======
->>>>>>> 1cff64e50888257e26bc72353e55aa900e4f0757
     createdAt: string;
     updatedAt: string;
 }
